@@ -1,8 +1,20 @@
+;;; ob-pwsh.el --- org-babel functions for powershell core evaluation
+
 ;; inspired by ob-racket.el by Chris Vig (chris@invictus.so)
 
-(require 'ob)
+;; Authors: George Mauer <gmauer@gmail.com>
+;;          Pedro Morais <fpvmorais@gmail.com>
+;; Version: 1.0
+;; Package-Requires: ((emacs "26.1"))
+;; Keywords: powershell, shell, execute, outlines, processes
+;; URL: https://github.com/rkiggen/ob-powershell
 
-;; TODO require `powershell-mode' here as well?
+;;; Commentary:
+
+;; Org-Babel support for evaluating powershell core source code.
+
+
+(require 'ob)
 
 ;; -- Variables --
 
@@ -44,10 +56,10 @@
                         vars-string
                         expanded-body)))
       )
-    ;; Run script with Racket interpreter, delete temp file, and return output
+    ;; Run script, delete temp file, and return output
     (with-temp-buffer
       (prog2
-          (call-process org-babel-command:pwsh nil (current-buffer) nil temp-file)
+          (call-process org-babel-command:pwsh nil (current-buffer) nil "-NoProfile" "-NoLogo" "-NonInteractive" temp-file)
           (buffer-string)
         (delete-file temp-file)))))
 
@@ -94,3 +106,4 @@ returned as a list."
   (format "@(%s)" (mapconcat #'identity (ob-pwsh--serialize-value) ", ")))
 
 (provide 'ob-pwsh)
+;;; ob-pwdh.el ends here
